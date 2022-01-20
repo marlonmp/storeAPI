@@ -16,6 +16,6 @@
   },
   "homepage": "https://github.com/marlonmp/storeAPI#readme",
   "dependencies": {
-    "psql": "^0.0.1"
+    "pg": "^8.7.1"
   }
 }
