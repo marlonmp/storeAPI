@@ -1,3 +1,8 @@
+DROP DATABASE IF EXISTS "storeAPI";
+CREATE DATABASE "storeAPI";
+
+\c storeAPI;
+
 CREATE TABLE "role" (
     "id" SERIAL PRIMARY KEY,
     "role" VARCHAR(20)
