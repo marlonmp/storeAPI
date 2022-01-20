@@ -20,6 +20,7 @@ CREATE TABLE "user" (
 CREATE TABLE "product" (
     "id" SERIAL PRIMARY KEY,
     "name" VARCHAR(45) NOT NULL,
+    "price" NUMERIC(7,2) NOT NULL,
     "description" VARCHAR(300) NOT NULL,
     "sales" INT NOT NULL
 );
