@@ -15,6 +15,8 @@ async function insert(product = {}) {
     
 }
 
+// SELECT "name", "description", "price", "sales" FROM "product" WHERE ("name" LIKE '%is%' OR "description" LIKE '%is%') AND ("price" BETWEEN 12.00 AND 40.00);
+
 async function getById(id = 0) {
 
     const query = `SELECT "name", "price", "description", "sales" FROM "product" WHERE "id" = $1;`;
@@ -31,13 +33,7 @@ async function getById(id = 0) {
 /** @param { Product } newProduct */
 async function update(id = 0, newProduct = {}) {
 
-    let query_ = `UPDATE "product" SET`;
-
-    let { query, args } = formatSets(newProduct);
-
-    query = query_ + query + ` WHERE "id" = $${args.length + 1};`;
-
-    args.push(id);
+    let { query, args } = updateQueryFormatter('product', id, newProduct);
 
     const { err, res } = await exec(query, args);
 
@@ -46,6 +42,10 @@ async function update(id = 0, newProduct = {}) {
     const { rowCount } = res;
     
     return { err, rowCount };
+
+}
+
+async function search(query = '', minPrice = 0, maxPrice = 0) {
 
 }
 
