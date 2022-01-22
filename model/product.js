@@ -17,7 +17,7 @@ async function insert(product = {}) {
 
 async function getById(id = 0) {
 
-    const query = `SELECT "name", "price", "description" FROM "product" WHERE "id" = $1;`;
+    const query = `SELECT "name", "price", "description", "sales" FROM "product" WHERE "id" = $1;`;
 
     const { err, res } = await exec(query, [id]);
 
