@@ -7,4 +7,6 @@ router.post('/', productCtl.create);
 
 router.put('/:id', productCtl.update);
 
+router.delete('/:id', productCtl.remove);
+
 module.exports = router;

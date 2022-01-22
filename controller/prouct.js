@@ -66,7 +66,27 @@ async function update(req, res) {
     res.sendStatus(200); // Ok
 }
 
+async function remove(req, res) {
+    const id = Number(req.params.id);
+
+    const { err, rowCount } = await productMdl.remove(id);
+
+    if (err != null) {
+        console.log('[ERROR] err:', err);
+
+        return res.sendStatus(500); // Internal Server Error
+    }
+
+    if (rowCount == 0) {
+
+        return res.sendStatus(404); // Not found
+    }
+
+    res.sendStatus(200); // Ok
+}
+
 module.exports = {
     create,
-    update
+    update,
+    remove
 };
