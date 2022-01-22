@@ -25,11 +25,7 @@ async function create(req, res) {
         return res.sendStatus(500); // Internal Server Error
     }
 
-    if (rowCount != 1) {
-        console.log('[ERROR] rowCont', rowCount);
-
-        return res.sendStatus(500); // Internal Server Error
-    }
+    if (rowCount == 0) return res.sendStatus(404); // Not found
 
     res.sendStatus(201); // Created
 }
@@ -57,11 +53,7 @@ async function update(req, res) {
         return res.sendStatus(500); // Internal Server Error
     }
 
-    if (rowCount != 1) {
-        console.log('[ERROR] rowCont', rowCount);
-
-        return res.sendStatus(500); // Internal Server Error
-    }
+    if (rowCount == 0) return res.sendStatus(404); // Not found
 
     res.sendStatus(200); // Ok
 }
@@ -77,10 +69,7 @@ async function remove(req, res) {
         return res.sendStatus(500); // Internal Server Error
     }
 
-    if (rowCount == 0) {
-
-        return res.sendStatus(404); // Not found
-    }
+    if (rowCount == 0) return res.sendStatus(404); // Not found
 
     res.sendStatus(200); // Ok
 }
