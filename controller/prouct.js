@@ -30,6 +30,26 @@ async function create(req, res) {
     res.sendStatus(201); // Created
 }
 
+async function getById(req, res) {
+    const id = Number(req.params.id);
+
+    const { err, rows } = await productMdl.getById(id);
+
+    const rowsLen = rows.length;
+
+    if (err != null) {
+        console.log('[ERROR] err:', err);
+
+        return res.sendStatus(500); // Internal Server Error
+    }
+
+    if (rowsLen == 0) return res.sendStatus(404); // Not found
+
+    res
+        .status(200) // Ok
+        .json(rows[0]); // product
+}
+
 async function update(req, res) {
 
     const id = Number(req.params.id);
@@ -76,6 +96,7 @@ async function remove(req, res) {
 
 module.exports = {
     create,
+    getById,
     update,
     remove
 };
