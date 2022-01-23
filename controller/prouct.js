@@ -19,7 +19,7 @@ async function create(req, res) {
 
     const { err, rowCount } = await productMdl.insert(newProduct);
 
-    if (err != null) {
+    if (err) {
         console.log('[ERROR] err:', err);
 
         return res.sendStatus(500); // Internal Server Error
@@ -47,7 +47,7 @@ async function search(req, res) {
 
     const { err, rows } = await productMdl.search(queries);
     
-    if (err != null) {
+    if (err) {
         console.log('[ERROR] err:', err);
         
         return res.sendStatus(500); // Internal Server Error
@@ -69,7 +69,7 @@ async function getById(req, res) {
 
     const { err, rows } = await productMdl.getById(id);
 
-    if (err != null) {
+    if (err) {
         console.log('[ERROR] err:', err);
         
         return res.sendStatus(500); // Internal Server Error
@@ -101,7 +101,7 @@ async function update(req, res) {
 
     const { err, rowCount } = await productMdl.update(id, newProduct);
 
-    if (err != null) {
+    if (err) {
         console.log('[ERROR] err:', err);
 
         return res.sendStatus(500); // Internal Server Error
@@ -119,7 +119,7 @@ async function remove(req, res) {
 
     const { err, rowCount } = await productMdl.remove(id);
 
-    if (err != null) {
+    if (err) {
         console.log('[ERROR] err:', err);
 
         return res.sendStatus(500); // Internal Server Error

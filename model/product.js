@@ -6,14 +6,7 @@ async function insert(product = {}) {
     
     const query = `INSERT INTO "product" ("name", "description", "price", "sales") VALUES ($1,$2,$3,$4);`;
 
-    const { err, res } = await exec(query, [product.name, product.description, product.price, 0]);
-
-    if (err != null) return { err, rowCount: 0 };
-
-    const { rowCount } = res;
-    
-    return { err, rowCount };
-    
+    return { err, rowCount } = await exec(query, [product.name, product.description, product.price, 0]);
 }
 
 // SELECT "name", "description", "price", "sales" FROM "product" WHERE ("name" ILIKE '%is%' OR "description" ILIKE '%is%') AND ("price" BETWEEN 12.00 AND 40.00);
@@ -60,13 +53,7 @@ async function search(queries) {
         { filter: filters.maxprice, value: queries.maxPrice }
     );
     
-    const { err, res } = await exec(query, args);
-
-    if (err != null) return { err, rows: null };
-
-    const { rows } = res;
-    
-    return { err, rows };
+    return { err, rows } = await exec(query, args);
     
 }
 
@@ -74,13 +61,7 @@ async function getById(id = 0) {
 
     const query = `SELECT "name", "price", "description", "sales" FROM "product" WHERE "id" = $1;`;
 
-    const { err, res } = await exec(query, [id]);
-
-    if (err != null) return { err, rows: null };
-
-    const { rows } = res;
-    
-    return { err, rows };
+    return { err, rows } = await exec(query, [id]);
 }
 
 /** @param { Product } newProduct */
@@ -88,27 +69,14 @@ async function update(id = 0, newProduct = {}) {
 
     let { query, args } = updateQueryFormatter('product', id, newProduct);
 
-    const { err, res } = await exec(query, args);
-
-    if (err != null) return { err, rowCount: 0 };
-
-    const { rowCount } = res;
-    
-    return { err, rowCount };
-
+    return { err, rowCount } = await exec(query, args);
 }
 
 async function remove(id = 0) {
 
     const query = `DELETE FROM "product" WHERE "id" = $1`;
 
-    const { err, res } = await exec(query, [id]);
-
-    if (err != null) return { err, rowCount: 0 };
-
-    const { rowCount } = res;
-    
-    return { err, rowCount };
+    return { err, rowCount } = await exec(query, [id]); 
 
 }
 
