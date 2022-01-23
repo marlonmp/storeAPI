@@ -7,12 +7,12 @@ async function exec(query, args) {
 
         const res = await pool.query(query, args);
 
-        return { err: null, res };
+        return { ...res };
 
     }
     catch(err) {
 
-        return { err, res: null };
+        return { err };
     }
 }
 
