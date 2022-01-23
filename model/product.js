@@ -8,7 +8,7 @@ async function insert(product = {}) {
 
     const { err, res } = await exec(query, [product.name, product.description, product.price, 0]);
 
-    if (err != null) return { err, rows: null };
+    if (err != null) return { err, rowCount: 0 };
 
     const { rowCount } = res;
     
@@ -90,7 +90,7 @@ async function update(id = 0, newProduct = {}) {
 
     const { err, res } = await exec(query, args);
 
-    if (err != null) return { err, rowCount: null };
+    if (err != null) return { err, rowCount: 0 };
 
     const { rowCount } = res;
     
@@ -104,7 +104,7 @@ async function remove(id = 0) {
 
     const { err, res } = await exec(query, [id]);
 
-    if (err != null) return { err, rowCount: null };
+    if (err != null) return { err, rowCount: 0 };
 
     const { rowCount } = res;
     
