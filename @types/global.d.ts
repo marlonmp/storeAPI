@@ -1,10 +1,8 @@
-import { QueryResult } from 'pg';
+import { FieldDef } from 'pg';
 
 declare global {
 
     // Globals
-
-    type error = Error | null;
 
     interface JSONObject {
         [key: string]: any
@@ -12,9 +10,7 @@ declare global {
     
     // db/*.js
 
-    type QueryRes = QueryResult<any> | null;
-
-    type Exec = (query: string, args: any[]) => { err: error, res: QueryRes };
+    type Exec = (query: string, args: any[]) => { err: error, command: string, fields: FieldDef[], oid: number, rowCount: number, rows: any[] };
 
     // model/*.js
 
