@@ -5,6 +5,8 @@ const productCtl = require('../controller/prouct');
 
 router.post('/', productCtl.create);
 
+router.get('/', productCtl.search);
+
 router.get('/:id', productCtl.getById);
 
 router.put('/:id', productCtl.update);

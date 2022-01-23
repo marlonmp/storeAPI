@@ -30,19 +30,41 @@ async function create(req, res) {
     res.sendStatus(201); // Created
 }
 
+async function search(req, res) {
+    const { search, minPrice, maxPrice } = req.query;
+
+    if (!(search || minPrice || maxPrice)) return res.sendStatus(400); // Bad Request
+
+    const { err, rows } = await productMdl.search(search, minPrice, maxPrice);
+    
+    if (err != null) {
+        console.log('[ERROR] err:', err);
+        
+        return res.sendStatus(500); // Internal Server Error
+    }
+
+    const rowsLen = rows.length;
+    
+    if (rowsLen == 0) return res.sendStatus(404); // Not found
+
+    res
+        .status(200) // Ok
+        .json(rows); // products
+}
+
 async function getById(req, res) {
     const id = Number(req.params.id);
 
     const { err, rows } = await productMdl.getById(id);
 
-    const rowsLen = rows.length;
-
     if (err != null) {
         console.log('[ERROR] err:', err);
-
+        
         return res.sendStatus(500); // Internal Server Error
     }
 
+    const rowsLen = rows.length;
+    
     if (rowsLen == 0) return res.sendStatus(404); // Not found
 
     res
@@ -97,6 +119,7 @@ async function remove(req, res) {
 module.exports = {
     create,
     getById,
+    search,
     update,
     remove
 };
