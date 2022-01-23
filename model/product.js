@@ -52,12 +52,12 @@ function searchQueryFormatter(...objs) {
     return { query, args };
 }
 
-async function search(search = '', minPrice = 0, maxPrice = 0) {
+async function search(queries) {
     
     const { query, args } = searchQueryFormatter(
-        { filter: filters.ILinke, value: search ? `%${search}%` : '' },
-        { filter: filters.minPrice, value: minPrice },
-        { filter: filters.maxprice, value: maxPrice }
+        { filter: filters.ILinke, value: queries.search ? `%${queries.search}%` : '' },
+        { filter: filters.minPrice, value: queries.minPrice },
+        { filter: filters.maxprice, value: queries.maxPrice }
     );
     
     const { err, res } = await exec(query, args);

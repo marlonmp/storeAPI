@@ -2,7 +2,7 @@ const productMdl = require('../model/product');
 
 const Validator = require('../lib/validator');
 
-const { productName, productDescription } = require('../lib/regexps');
+const { productName, productDescription, searchQuery, decimal } = require('../lib/regexps');
 
 async function create(req, res) {
 
@@ -31,11 +31,21 @@ async function create(req, res) {
 }
 
 async function search(req, res) {
-    const { search, minPrice, maxPrice } = req.query;
 
-    if (!(search || minPrice || maxPrice)) return res.sendStatus(400); // Bad Request
+    const validator = new Validator(req.query);
 
-    const { err, rows } = await productMdl.search(search, minPrice, maxPrice);
+    validator
+        .optionalMatch('search', '', searchQuery)
+        .optionalMatch('minPrice', '', decimal)
+        .optionalMatch('maxPrice', '', decimal);
+    
+    const queries = validator.getValidObj();
+
+    console.log({queries});
+
+    if (!validator.isOk() || Object.keys(queries).length == 0) return res.sendStatus(400); // Bad Request
+
+    const { err, rows } = await productMdl.search(queries);
     
     if (err != null) {
         console.log('[ERROR] err:', err);
@@ -54,6 +64,8 @@ async function search(req, res) {
 
 async function getById(req, res) {
     const id = Number(req.params.id);
+
+    if (isNaN(id)) return res.sendStatus(400); // Bad Request
 
     const { err, rows } = await productMdl.getById(id);
 
@@ -83,7 +95,7 @@ async function update(req, res) {
         .optionalMatch('description', '', productDescription)
         .optionalMatch('price', 0);
     
-    if (!validator.isOk()) return res.sendStatus(400); // Bad Request
+    if (!validator.isOk() || isNaN(id)) return res.sendStatus(400); // Bad Request
 
     const newProduct = validator.getValidObj();
 
@@ -102,6 +114,8 @@ async function update(req, res) {
 
 async function remove(req, res) {
     const id = Number(req.params.id);
+
+    if (isNaN(id)) return res.sendStatus(400); // Bad Request
 
     const { err, rowCount } = await productMdl.remove(id);
 
