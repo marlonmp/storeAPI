@@ -10,7 +10,7 @@ declare global {
     
     // db/*.js
 
-    type Exec = (query: string, args: any[]) => { err: Error, command: string, fields: FieldDef[], oid: number, rowCount: number, rows: any[] };
+    type Exec = (query: string, args: any[]) => { command: string, fields: FieldDef[], oid: number, rowCount: number, rows: any[] } | { err: Error };
 
     // model/*.js
 
