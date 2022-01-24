@@ -8,6 +8,13 @@ async function insert(user = {}) {
     return { err, rowCount } = await exec(query, [user.role, user.firstName, user.lastName, user.email, user.password]);
 }
 
+async function signIn(email = '') {
+
+    const query = `SELECT "id", "role_id", "password" FROM "user" WHERE "email" = $1`;
+
+    return { err, rows } = await exec(query, [email]);
+}
+
 async function getById(id = 0) {
 
     const query = `SELECT "role_id","first_name","last_name","email" FROM "user" WHERE "id" = $1;`;
@@ -32,6 +39,7 @@ async function remove(id = 0) {
 
 module.exports = {
     insert,
+    signIn,
     getById,
     update,
     remove
