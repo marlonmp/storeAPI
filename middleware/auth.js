@@ -13,6 +13,16 @@ function verifyToken(req, res, next) {
     next();
 }
 
+function verifyIfIsOwner(req, res, next) {
+
+    const { roleId } = req.jwt.claims;
+
+    if (roleId != 2) return res.sendStatus(401); // Unauthorized
+
+    next();
+}
+
 module.exports = {
-    verifyToken
+    verifyToken,
+    verifyIfIsOwner
 }
