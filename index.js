@@ -11,14 +11,11 @@ app.use(cookieParser());
 
 app.use(require('./routes'));
 
+const { SERVER_PORT, SERVER_HOST } = process.env;
+
 const listener = app.listen(
-    process.env.SERVER_PORT,
-    process.env.SERVER_HOST,
-
-    function() {
-        
-        const { address, port } = listener.address();
-
-        console.log(`[EVENT] Server start in http://${address}:${port}`);
-    }
+    SERVER_PORT,
+    SERVER_HOST,
+    
+    () => console.log(`[EVENT] Server start in http://${SERVER_HOST}:${SERVER_PORT}`)
 );
