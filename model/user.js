@@ -3,9 +3,9 @@ const { exec, updateQueryFormatter } = require('../db/queries');
 /** @param { User } user */
 async function insert(user = {}) {
 
-    const query = `INSERT INTO "user" ("role_id","first_name","last_name","email","password") VALUES (1,$1,$2,$3,$4);`;
+    const query = `INSERT INTO "user" ("role_id","first_name","last_name","email","password") VALUES ($1,$2,$3,$4,$5);`;
 
-    return { err, rowCount } = await exec(query, [user.firstName, user.lastName, user.email, user.password]);
+    return { err, rowCount } = await exec(query, [user.role, user.firstName, user.lastName, user.email, user.password]);
 }
 
 async function getById(id = 0) {
