@@ -1,21 +1,8 @@
 const productMdl = require('../model/product');
 
-const Validator = require('../lib/validator');
-
-const { productName, productDescription, searchQuery, decimal } = require('../lib/regexps');
-
 async function create(req, res) {
 
-    const validator = new Validator(req.body);
-
-    validator
-        .match('name', '', productName)
-        .match('description', '', productDescription)
-        .match('price', 0);
-    
-    if (!validator.isOk()) return res.sendStatus(400); // Bad Request
-
-    const newProduct = validator.getValidObj();
+    const { newProduct } = req.checkedBody;
 
     const { err, rowCount } = await productMdl.insert(newProduct);
 
@@ -25,25 +12,14 @@ async function create(req, res) {
         return res.sendStatus(500); // Internal Server Error
     }
 
-    if (rowCount == 0) return res.sendStatus(404); // Not found
+    if (rowCount == 0) return res.sendStatus(409); // Conflict
 
     res.sendStatus(201); // Created
 }
 
-async function search(req, res) {
+async function searchProduct(req, res) {
 
-    const validator = new Validator(req.query);
-
-    validator
-        .optionalMatch('search', '', searchQuery)
-        .optionalMatch('minPrice', '', decimal)
-        .optionalMatch('maxPrice', '', decimal);
-    
-    const queries = validator.getValidObj();
-
-    console.log({queries});
-
-    if (!validator.isOk() || Object.keys(queries).length == 0) return res.sendStatus(400); // Bad Request
+    const { queries } = req.checkedBody;
 
     const { err, rows } = await productMdl.search(queries);
     
@@ -63,9 +39,7 @@ async function search(req, res) {
 }
 
 async function getById(req, res) {
-    const id = Number(req.params.id);
-
-    if (isNaN(id)) return res.sendStatus(400); // Bad Request
+    const { id } = req.checkedBody;
 
     const { err, rows } = await productMdl.getById(id);
 
@@ -86,18 +60,7 @@ async function getById(req, res) {
 
 async function update(req, res) {
 
-    const id = Number(req.params.id);
-
-    const validator = new Validator(req.body);
-
-    validator
-        .optionalMatch('name', '', productName)
-        .optionalMatch('description', '', productDescription)
-        .optionalMatch('price', 0);
-    
-    if (!validator.isOk() || isNaN(id)) return res.sendStatus(400); // Bad Request
-
-    const newProduct = validator.getValidObj();
+    const { id, newProduct } = req.checkedBody;
 
     const { err, rowCount } = await productMdl.update(id, newProduct);
 
@@ -113,9 +76,7 @@ async function update(req, res) {
 }
 
 async function remove(req, res) {
-    const id = Number(req.params.id);
-
-    if (isNaN(id)) return res.sendStatus(400); // Bad Request
+    const { id } = req.checkedBody;
 
     const { err, rowCount } = await productMdl.remove(id);
 
@@ -133,7 +94,7 @@ async function remove(req, res) {
 module.exports = {
     create,
     getById,
-    search,
+    searchProduct,
     update,
     remove
 };
