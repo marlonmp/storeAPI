@@ -2,9 +2,7 @@ const productMdl = require('../model/product');
 
 async function create(req, res) {
 
-    const { newProduct } = req.checkedBody;
-
-    const { err, rowCount } = await productMdl.insert(newProduct);
+    const { err, rowCount } = await productMdl.insert(req.checkedBody.product);
 
     if (err) {
         console.log('[ERROR] err:', err);
@@ -19,9 +17,7 @@ async function create(req, res) {
 
 async function searchProduct(req, res) {
 
-    const { queries } = req.checkedBody;
-
-    const { err, rows } = await productMdl.search(queries);
+    const { err, rows } = await productMdl.search(req.checkedQuery);
     
     if (err) {
         console.log('[ERROR] err:', err);
@@ -39,9 +35,8 @@ async function searchProduct(req, res) {
 }
 
 async function getById(req, res) {
-    const { id } = req.checkedBody;
 
-    const { err, rows } = await productMdl.getById(id);
+    const { err, rows } = await productMdl.getById(req.checkedParams.id);
 
     if (err) {
         console.log('[ERROR] err:', err);
@@ -60,9 +55,9 @@ async function getById(req, res) {
 
 async function update(req, res) {
 
-    const { id, newProduct } = req.checkedBody;
+    const { id, product } = req.checkedBody;
 
-    const { err, rowCount } = await productMdl.update(id, newProduct);
+    const { err, rowCount } = await productMdl.update(id, product);
 
     if (err) {
         console.log('[ERROR] err:', err);
@@ -76,9 +71,8 @@ async function update(req, res) {
 }
 
 async function remove(req, res) {
-    const { id } = req.checkedBody;
 
-    const { err, rowCount } = await productMdl.remove(id);
+    const { err, rowCount } = await productMdl.remove(req.checkedParams.id);
 
     if (err) {
         console.log('[ERROR] err:', err);
