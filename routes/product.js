@@ -16,4 +16,6 @@ router.put('/:id', auth.verifyToken, auth.verifyIfIsOwner, validate.updateProduc
 
 router.delete('/:id', auth.verifyToken, auth.verifyIfIsOwner, validate.paramId, productCtl.remove);
 
+router.use('/:id/ratings', require('./product.ratings'));
+
 module.exports = router;
