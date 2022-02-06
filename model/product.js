@@ -1,4 +1,4 @@
-const { exec, updateQueryFormatter } = require('../db/queries');
+const { exec } = require('../db/queries');
 const util = require('util');
 
 /** @param { Product } product */
