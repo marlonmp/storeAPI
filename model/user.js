@@ -1,4 +1,4 @@
-const { exec, updateQueryFormatter } = require('../db/queries');
+const { exec } = require('../db/queries');
 
 /** @param { User } user */
 async function insert(user = {}) {
