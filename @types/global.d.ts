@@ -1,4 +1,4 @@
-import { FieldDef } from 'pg';
+import { FieldDef } from 'pg'
 
 declare global {
 
@@ -10,7 +10,7 @@ declare global {
     
     // db/*.js
 
-    type Exec = (query: string, args: any[]) => { command: string, fields: FieldDef[], oid: number, rowCount: number, rows: any[] } | { err: Error };
+    type Exec = (query: string, args: any[]) => { command: string, fields: FieldDef[], oid: number, rowCount: number, rows: any[] } | { err: Error }
 
     // model/*.js
 
@@ -21,8 +21,8 @@ declare global {
         description: string,
     
         price: number,
-        sales: number,
-    };
+        sales: number
+    }
     
     type User = {
         id: number,
@@ -33,5 +33,14 @@ declare global {
     
         email: String,
         password: String
+    }
+
+    type ProductRating = {
+        id: number,
+    
+        owner: number,
+
+        rating: number,
+        comment: string
     }
 }
