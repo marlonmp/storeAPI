@@ -1,5 +1,5 @@
 const validator = require('../lib/validator');
-const { Optional, searchQuery, decimal, productName, productDescription, userName, userEmail, userPassword } = require('../lib/validations');
+const { Optional, searchQuery, decimal, productName, productDescription, userName, userEmail, userPassword, number } = require('../lib/validations');
 
 
 function createProduct(req, res, next) {
@@ -118,6 +118,23 @@ function updateUser(req, res, next) {
     next();
 }
 
+function createRating(res, req, next) {
+
+    const { owner, rating, comment } = req.body;
+
+    const isValid = validator.check(
+        { value: owner, fn: number },
+        { value: rating, fn: decimal },
+        { value: comment, fn: productDescription }
+    );
+
+    if (!isValid) return res.sendStatus(400); // Bad Request
+
+    req.checkedBody.productRating = { owner, rating, comment };
+
+    next();
+}
+
 module.exports = {
     createProduct,
     searchProduct,
@@ -125,5 +142,6 @@ module.exports = {
     updateProduct,
     signUp,
     signIn,
-    updateUser
+    updateUser,
+    createRating
 };
