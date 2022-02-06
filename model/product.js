@@ -1,5 +1,4 @@
 const { exec } = require('../db/queries');
-const util = require('util');
 
 /** @param { Product } product */
 async function insert(product = {}) {
