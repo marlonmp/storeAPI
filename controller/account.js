@@ -15,7 +15,7 @@ async function signUp(req, res) {
 
     if (rowCount == 0) return res.sendStatus(409); // Conflict
 
-    res.sendStatus(200); // Ok
+    res.sendStatus(201); // Created
 }
 
 async function signIn(req, res) {
@@ -29,6 +29,8 @@ async function signIn(req, res) {
 
         return res.sendStatus(500); // Internal Server Error
     }
+
+    if (rows.length == 0) return res.sendStatus(404); // Not found
 
     const userSelected = rows[0];
 
@@ -68,6 +70,8 @@ async function getAccount(req, res) {
         return res.sendStatus(500); // Internal Server Error
     }
 
+    if (rows.length == 0) return res.sendStatus(404); // Not found
+
     res
         .status(200) // Ok
         .json(rows[0]);
@@ -87,7 +91,7 @@ async function update(req, res) {
         return res.sendStatus(500); // Internal Server Error
     }
 
-    if (rowCount == 0) return res.sendStatus(404); // Not found
+    if (rowCount == 0) return res.sendStatus(409); // Conflict
 
     res.sendStatus(200); // Ok
 }

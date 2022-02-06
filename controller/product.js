@@ -24,10 +24,8 @@ async function searchProduct(req, res) {
         
         return res.sendStatus(500); // Internal Server Error
     }
-
-    const rowsLen = rows.length;
     
-    if (rowsLen == 0) return res.sendStatus(404); // Not found
+    if (rows.length == 0) return res.sendStatus(404); // Not found
 
     res
         .status(200) // Ok
@@ -43,10 +41,8 @@ async function getById(req, res) {
         
         return res.sendStatus(500); // Internal Server Error
     }
-
-    const rowsLen = rows.length;
     
-    if (rowsLen == 0) return res.sendStatus(404); // Not found
+    if (rows.length == 0) return res.sendStatus(404); // Not found
 
     res
         .status(200) // Ok
