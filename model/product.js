@@ -4,62 +4,22 @@ const util = require('util');
 /** @param { Product } product */
 async function insert(product = {}) {
     
-    const query = `INSERT INTO "product" ("name", "description", "price", "sales") VALUES ($1,$2,$3,$4);`;
+    const query = `CALL new_product($1,$2,$3);`;
 
-    return { err, rowCount } = await exec(query, [product.name, product.description, product.price, 0]);
-}
-
-// SELECT "name", "description", "price", "sales" FROM "product" WHERE ("name" ILIKE '%is%' OR "description" ILIKE '%is%') AND ("price" BETWEEN 12.00 AND 40.00);
-
-const filters = {
-    ILinke: ` ("name" ILIKE $%d OR "description" ILIKE $%d)`,
-    minPrice: ` "price" >= $%d`,
-    maxprice: ` "price" <= $%d`
-}
-
-function searchQueryFormatter(...objs) {
-
-    let query = `SELECT "name", "description", "price", "sales" FROM "product" WHERE`;
-
-    const args = [];
-
-    const objsLen = objs.length;
-
-    let isTheFilterAdded = false;
-
-    for (let i = 0; i < objsLen; i++) {
-        
-        if (objs[i].value) {
-            if (isTheFilterAdded) query += ` AND`;
-
-            args.push(objs[i].value);
-
-            query += objs[i].filter.replace(/\%d/g, args.length);
-
-            if (!isTheFilterAdded) isTheFilterAdded = true;
-        }
-    }
-
-    query += ';';
-
-    return { query, args };
+    return { err, rowCount } = await exec(query, [product.name, product.price, product.description]);
 }
 
 async function search(queries) {
     
-    const { query, args } = searchQueryFormatter(
-        { filter: filters.ILinke, value: queries.search ? `%${queries.search}%` : '' },
-        { filter: filters.minPrice, value: queries.minPrice },
-        { filter: filters.maxprice, value: queries.maxPrice }
-    );
-    
-    return { err, rows } = await exec(query, args);
+    const query = `SELECT search_products($1,$2,$3);`;
+
+    return { err, rows } = await exec(query, [queries.query, queries.minPrice, queries.maxPrice]);
     
 }
 
 async function getById(id = 0) {
 
-    const query = `SELECT "name", "price", "description", "sales" FROM "product" WHERE "id" = $1;`;
+    const query = `SELECT get_product($1);`;
 
     return { err, rows } = await exec(query, [id]);
 }
@@ -67,14 +27,14 @@ async function getById(id = 0) {
 /** @param { Product } newProduct */
 async function update(id = 0, newProduct = {}) {
 
-    let { query, args } = updateQueryFormatter('product', id, newProduct);
+    const query = `CALL update_product($1,$2,$3,$4);`;
 
-    return { err, rowCount } = await exec(query, args);
+    return { err, rowCount } = await exec(query, [id, newProduct.name, newProduct.price, newProduct.description]);
 }
 
 async function remove(id = 0) {
 
-    const query = `DELETE FROM "product" WHERE "id" = $1`;
+    const query = `CALL delete_product($1)`;
 
     return { err, rowCount } = await exec(query, [id]); 
 
