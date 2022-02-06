@@ -36,15 +36,17 @@ function searchProduct(req, res, next) {
     next();
 }
 
-function paramId(req, res, next) {
+function paramId(key = 'id') {
 
-    const id = Number(req.params.id);
+    return (req, res, next) => {
+        const id = Number(req.params[key]);
 
-    if (isNaN(id)) return res.sendStatus(400); // Bad Request
+        if (isNaN(id)) return res.sendStatus(400); // Bad Request
 
-    req.checkedParams.id = id;
+        req.checkedParams[key] = id;
 
-    next();
+        next();
+    }
 }
 
 function updateProduct(req, res, next) {
