@@ -16,3 +16,7 @@ function hash(req, res, next) {
 
     next();
 }
+
+module.exports = {
+    hash
+}
