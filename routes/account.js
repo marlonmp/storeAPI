@@ -11,10 +11,10 @@ router.post('/signUp', validate.signUp, hashPassword.hash, accountCtl.signUp);
 
 router.post('/signIn',  validate.signIn, accountCtl.signIn);
 
-router.get('/', auth.verifyToken, validate.paramId, accountCtl.getAccount);
+router.get('/', auth.verifyToken, validate.paramId(), accountCtl.getAccount);
 
-router.put('/', auth.verifyToken, validate.paramId, validate.updateUser, hashPassword.hash, accountCtl.update);
+router.put('/', auth.verifyToken, validate.paramId(), validate.updateUser, hashPassword.hash, accountCtl.update);
 
-router.delete('/', auth.verifyToken, validate.paramId, accountCtl.remove);
+router.delete('/', auth.verifyToken, validate.paramId(), accountCtl.remove);
 
 module.exports = router;
